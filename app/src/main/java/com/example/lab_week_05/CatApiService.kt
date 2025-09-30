@@ -1,7 +1,13 @@
+package com.example.lab_week_05.api
+
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
+import com.example.lab_week_05.model.ImageData
 
 interface CatApiService {
-    @GET("v1/images/search")
-    fun getRandomCat(): Call<String> // return JSON mentah
+    @GET("images/search")
+    fun searchImages(
+        @Query("limit") limit: Int
+    ): Call<List<ImageData>>
 }
