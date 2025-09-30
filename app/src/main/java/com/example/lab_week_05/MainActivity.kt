@@ -79,7 +79,15 @@ class MainActivity : AppCompatActivity() {
                         Log.d(MAIN_ACTIVITY, "Missing image URL")
                     }
 
-                    apiResponseView.text = getString(R.string.image_placeholder, imageUrl)
+                    // Ambil breed name, kalau tidak ada tampilkan "Unknown"
+                    val breedName = if (!validImages.isNullOrEmpty() &&
+                        !validImages.first().breeds.isNullOrEmpty()) {
+                        validImages.first().breeds?.first()?.name ?: "Unknown"
+                    } else {
+                        "Unknown"
+                    }
+
+                    apiResponseView.text = "Breed: $breedName"
                 } else {
                     apiResponseView.text = "Error: ${response.code()}"
                 }
