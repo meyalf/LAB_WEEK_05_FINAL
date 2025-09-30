@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.ImageView
 import com.example.lab_week_05.api.CatApiService
 import com.example.lab_week_05.model.ImageData
 import retrofit2.Call
@@ -35,6 +36,14 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.api_response)
     }
 
+    private val imageResultView: ImageView by lazy {
+        findViewById(R.id.image_result)
+    }
+
+    private val imageLoader: ImageLoader by lazy {
+        GlideLoader(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,13 +66,17 @@ class MainActivity : AppCompatActivity() {
                     val images = response.body()
                     val validImages = images?.filter { !it.imageUrl.isNullOrBlank() }
 
-                    Log.d(MAIN_ACTIVITY, "Total images: ${images?.size}, Valid: ${validImages?.size}")
-
-                    // Kalau tidak ada URL valid dari API, pakai URL hardcoded
                     val imageUrl = if (validImages.isNullOrEmpty()) {
                         "https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg"
                     } else {
                         validImages.first().imageUrl!!
+                    }
+
+                    // Load gambar ke ImageView
+                    if (imageUrl.isNotBlank()) {
+                        imageLoader.loadImage(imageUrl, imageResultView)
+                    } else {
+                        Log.d(MAIN_ACTIVITY, "Missing image URL")
                     }
 
                     apiResponseView.text = getString(R.string.image_placeholder, imageUrl)

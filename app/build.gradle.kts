@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation("com.github.bumptech.glide:glide:4.14.2")
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
